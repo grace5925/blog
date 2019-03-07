@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+  
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta name="author" content="好的老头">
+  
+  
+  <title>javascript学习笔记 | 好的老头</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Javascript,闭包,">
+  
+
+  
+  <meta name="description" content="javascript学习笔记">
+
+  
+
+  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Dzlv6CygGbM1UIsGQvz2qnXQ-gzGzoHsz","appkey":"AwGaJg3f3cR0eJ8jG8Hc8yLM","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2018-02-06",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "好的老头",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: ""
+  };
+</script>
+
+  <script src="/blog/vendor/sha256.min.js"></script>
+<script src="/blog/js/auth.js"></script>
+<script src="/blog/js/index.js"></script>
+<script src="/blog/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/blog/css/index.css">
+<link rel="stylesheet" href="/blog/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">1fu.online</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 「心有山海，静而无边」</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/grace5925/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2018-03-21
+    </span>
+    
+      <span>
+        | <a href="/blog/categories/Javascript/"><i class="fa fa-bookmark"></i>Javascript</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    javascript学习笔记
+  </h1>
+  
+  <article class="passage-article">
+    <h1 id="javascript学习笔记"><a href="#javascript学习笔记" class="headerlink" title="javascript学习笔记"></a>javascript学习笔记</h1><h2 id="arguments：实参集合"><a href="#arguments：实参集合" class="headerlink" title="arguments：实参集合"></a>arguments：实参集合</h2><p> 当我们不知道用户具体要传递几个参数时，我们无法设置形参个数，遇到此类需求，需要使用函数内置的实参集合：arguments</p>
+<ol>
+<li><p>arguments只有函数才有</p>
+</li>
+<li><p>不管执行函数的时候是否传递实参，arguments天生就存在，没传就是个空集合，传了就包含所有传递的值</p>
+</li>
+<li><p>不管是否设置了形参,arguments中始终存储了所有实参的信息</p>
+</li>
+</ol>
+<h2 id="closure：闭包"><a href="#closure：闭包" class="headerlink" title="closure：闭包"></a>closure：闭包</h2><blockquote>
+<p>函数执行会形成一个私有作用域，让里面的私有变量和外界互不影响（相互不干扰、外面无法直接获取里面的变量值），此时我们可以理解为私有作用域把私有变量保护起来，我们把这种保护机制称之为<code>闭包</code>。</p>
+</blockquote>
+<ul>
+<li><p>优点：</p>
+<ul>
+<li>变量私有，不会造成全局污染</li>
+<li>代码模块化</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>在IE下容易发生内存泄漏</li>
+</ul>
+</li>
+</ul>
+<p><code>栈内存</code></p>
+<p>  作用域（全局作用域/私有作用域）:提供一个供JS代码执行的环境</p>
+<p><code>堆内存</code></p>
+<blockquote>
+<p>所有的引用数据类型，它们需要存储的内容都在堆内存中（相当于一个仓库，目的是存储信息）</p>
+</blockquote>
+<ul>
+<li>对象会把键值对存储起来</li>
+<li>函数会把代码当作字符串存储进来</li>
+</ul>
+<h2 id="OOP：面向对象"><a href="#OOP：面向对象" class="headerlink" title="OOP：面向对象"></a>OOP：面向对象</h2><ul>
+<li>继承：子类继承父类中的属性和方法；</li>
+<li>封装：<ul>
+<li>将相同代码整合到一个方法里；</li>
+<li>特点：低耦合高内聚。</li>
+</ul>
+</li>
+<li>多态：当前方法的多种形态；<ul>
+<li>包含重载和重写；</li>
+<li>在js中不存在重载；</li>
+<li>重写：子类重写父类的方法。</li>
+</ul>
+</li>
+</ul>
+<h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><ul>
+<li>目的：为了创建一个自定义类，并且创建这个类的实例；</li>
+<li>与工厂模式的区别：执行的时候：普通函数直接传值执行，构造函数需要通过new一个实例来执行。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//=&gt; 工厂模式：</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPerson</span>(<span class="params">name,age</span>)</span>&#123;</span><br><span class="line">     <span class="keyword">var</span> obj = &#123;&#125;;</span><br><span class="line">     obj.name = name;</span><br><span class="line">     obj.age = age;</span><br><span class="line">     obj.writeJs = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">         <span class="built_in">console</span>.log(<span class="string">'我是'</span>+<span class="keyword">this</span>.name+<span class="string">',我今年'</span>+<span class="keyword">this</span>.age+<span class="string">'岁'</span>);</span><br><span class="line">     &#125;;</span><br><span class="line">     <span class="keyword">return</span> obj;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p1 = createPerson(<span class="string">'小王'</span>,<span class="string">'18'</span>);</span><br><span class="line">p1.writeJs();</span><br><span class="line"></span><br><span class="line"><span class="comment">//=&gt; 构造函数：</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">CreateStudents</span>(<span class="params">name,age</span>)</span>&#123;</span><br><span class="line">     <span class="keyword">this</span>.name = name;</span><br><span class="line">     <span class="keyword">this</span>.age = age;</span><br><span class="line">     <span class="keyword">this</span>.writeJs = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">         <span class="built_in">console</span>.log(<span class="string">'我是'</span>+<span class="keyword">this</span>.name+<span class="string">',我今年'</span>+<span class="keyword">this</span>.age+<span class="string">'岁'</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p2 = <span class="keyword">new</span> CreateStudents(<span class="string">'小王'</span>,<span class="string">'19'</span>);</span><br><span class="line"><span class="comment">//通过new执行后，CreateStudent就是一个类了，p2就是CreateStudent这个类的一个实例</span></span><br><span class="line">p2.writeJs();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>js中所有的类都是函数数据类型的，它通过new执行变成了一个类，但是它本身也是一个普通的函数；</li>
+<li>构造函数模式中拥有类和实例的概念，并且实例和实例之间是相互独立开的。</li>
+</ul>
+<h2 id="prototype：原型链"><a href="#prototype：原型链" class="headerlink" title="prototype：原型链"></a>prototype：原型链</h2><ul>
+<li>基于构造函数模式的原型链模式，解决了方法或者属性公有的问题，将实例之间相同的属性和方法提取成公有的属性和方法；</li>
+<li>每一个函数数据类型（普通函数、类）都有一个天生自带的属性prototype（原型），并且这个属性是一个对象数据类型的值；</li>
+<li>prototype上天生就有一个属性constructor(构造函数)，属性值是当前函数（类）本身；</li>
+<li>每一个对象数据类型（普通对象、实例、prototype）也天生自带一个属性：<strong>proto</strong>，属性值是当前实例所属类的原型（prototype）。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">CreateStudents</span>(<span class="params">name,age</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;;</span><br><span class="line">CreateStudents.prototype.writeJs = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'我是'</span>+<span class="keyword">this</span>.name+<span class="string">',我今年'</span>+<span class="keyword">this</span>.age+<span class="string">'岁'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span> CreateStudents(<span class="string">'小红'</span>,<span class="number">19</span>);</span><br><span class="line"><span class="keyword">var</span> p2 = <span class="keyword">new</span> CreateStudents(<span class="string">'小王'</span>,<span class="number">20</span>);</span><br><span class="line"><span class="built_in">console</span>.log(p1.writeJs === p2.writeJs); <span class="comment">// true</span></span><br><span class="line">p1.writeJs();</span><br></pre></td></tr></table></figure>
+<h2 id="call，apply，bind"><a href="#call，apply，bind" class="headerlink" title="call，apply，bind"></a>call，apply，bind</h2><blockquote>
+<p>call：<br>首先我们让Function原型上的call方法执行，在执行call方法的时候，我们让fn方法中的this变为第一个参数值obj；然后再把fn这个函数执行；</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    name: <span class="string">'小明'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line">fn(); <span class="comment">//=&gt; 这时this指向window</span></span><br><span class="line">fn.call(obj); <span class="comment">//=&gt;此时this指向obj</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>call和apply的区别：call接收的参数类型不一样，aplly接收两个参数，第二个参数是数组。</p>
+</blockquote>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#javascript学习笔记"><span class="toc-text">javascript学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#arguments：实参集合"><span class="toc-text">arguments：实参集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#closure：闭包"><span class="toc-text">closure：闭包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OOP：面向对象"><span class="toc-text">OOP：面向对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#构造函数"><span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#prototype：原型链"><span class="toc-text">prototype：原型链</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#call，apply，bind"><span class="toc-text">call，apply，bind</span></a></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 好的老头</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">http://1fu.online/blog/passages/2018-03-21-javascript学习笔记/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/blog/tags/闭包/"><i class="fa fa-tags"></i>闭包</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      <div class="site-comment-contanier">
+  <p id="site-comment-info">
+    <i class="fa fa-spinner fa-spin"></i> 评论加载中
+  </p>
+  <div id="site-comment">
+  </div>
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">博客推荐</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/" target="_blank">GodBMW</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="http://ruanyifeng.com/" target="_blank">阮一峰的个人网站</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">系列教程</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/categories/webpack4%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" target="_blank">webpack4系列教程</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/design-patterns/" target="_blank">设计模式手册</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">抓到我</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://juejin.im/user/5b3c19f7e51d4519856564d1" target="_blank">掘金</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://segmentfault.com/" target="_blank">思否</a>
+          </span>
+        
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: grace5925@hotmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https:/godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+        
+          <div>
+            <img src="/images/wechat.png" alt="WeChat">
+            
+              <p>WeChat</p>
+            
+          </div>
+        
+          <div>
+            <img src="/images/alipay.png" alt="AliPay">
+            
+              <p>AliPay</p>
+            
+          </div>
+        
+      </div>
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/blog/passages/2018-03-22-git指令/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/blog/passages/2018-02-06-hexo指令/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    <a href="javascript:void(0);" id="site-reward">
+      <i class="fa fa-thumbs-up"></i>
+    </a>
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133168577-1"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-133168577-1');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+  </body>
+</html>

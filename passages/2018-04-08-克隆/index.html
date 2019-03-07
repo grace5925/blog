@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+  
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta name="author" content="好的老头">
+  
+  
+  <title>克隆 | 好的老头</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Javascript,Array,">
+  
+
+  
+  <meta name="description" content="克隆的实现">
+
+  
+
+  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Dzlv6CygGbM1UIsGQvz2qnXQ-gzGzoHsz","appkey":"AwGaJg3f3cR0eJ8jG8Hc8yLM","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2018-02-06",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "好的老头",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: ""
+  };
+</script>
+
+  <script src="/blog/vendor/sha256.min.js"></script>
+<script src="/blog/js/auth.js"></script>
+<script src="/blog/js/index.js"></script>
+<script src="/blog/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/blog/css/index.css">
+<link rel="stylesheet" href="/blog/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">1fu.online</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 「心有山海，静而无边」</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/grace5925/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2018-04-08
+    </span>
+    
+      <span>
+        | <a href="/blog/categories/Javascript/"><i class="fa fa-bookmark"></i>Javascript</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    克隆
+  </h1>
+  
+  <article class="passage-article">
+    <h1 id="克隆的实现"><a href="#克隆的实现" class="headerlink" title="克隆的实现"></a>克隆的实现</h1><h2 id="浅克隆"><a href="#浅克隆" class="headerlink" title="浅克隆"></a>浅克隆</h2><blockquote>
+<p><code>浅克隆</code>，只是最外面的部分被克隆，深层的对象依然是引用指向被克隆对象的同一块堆内存，所以存在的问题就是，当被克隆的对象或者新对象发生修改，两个对象会同时被修改。新的api <code>Object.assign()</code>也有同样的效果。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> oldObj = &#123; <span class="comment">//=&gt; 原对象</span></span><br><span class="line">    a: <span class="number">1</span>,</span><br><span class="line">    b: [<span class="string">'d'</span>,<span class="string">'e'</span>],</span><br><span class="line">    c: &#123; <span class="attr">f</span>: &#123;<span class="attr">g</span>: <span class="number">2</span>&#125; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">shallowClone</span>(<span class="params">o</span>)</span>&#123; <span class="comment">//=&gt; 浅克隆函数</span></span><br><span class="line">    <span class="keyword">const</span> obj = &#123;&#125;;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i <span class="keyword">in</span> o)&#123;</span><br><span class="line">        obj[i] = o[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> obj;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> newObj = shallowClone(oldObj); <span class="comment">//=&gt; 克隆的新对象</span></span><br><span class="line"><span class="built_in">console</span>.log(oldObj === newObj); <span class="comment">//=&gt; false</span></span><br><span class="line"><span class="built_in">console</span>.log(oldObj.c.f === newObj.c.f); <span class="comment">//=&gt; true</span></span><br><span class="line"></span><br><span class="line">newObj.a = <span class="string">'change'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(oldObj.a, newObj.a); <span class="comment">//=&gt; 1 "change"</span></span><br><span class="line"></span><br><span class="line">newObj.c.f.g = <span class="string">'change'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(oldObj.c.f.g, newObj.c.f.g); <span class="comment">//=&gt; change change</span></span><br></pre></td></tr></table></figure>
+<h2 id="深度克隆"><a href="#深度克隆" class="headerlink" title="深度克隆"></a>深度克隆</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> oldObj = &#123; <span class="comment">//=&gt; 原对象</span></span><br><span class="line">    a: <span class="number">1</span>,</span><br><span class="line">    b: [<span class="string">'d'</span>,<span class="string">'e'</span>],</span><br><span class="line">    c: &#123; <span class="attr">f</span>: &#123;<span class="attr">g</span>: <span class="number">2</span>&#125; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> newObj = <span class="built_in">JSON</span>.parse(<span class="built_in">JSON</span>.stringify(oldObj)); <span class="comment">//=&gt; 克隆的新对象</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>通过上面JSON的parse和stringify看似可以达到深度克隆的效果，但其中却是有坑的。</p>
+</blockquote>
+<ol>
+<li>它无法实现对函数、RegExp等特殊对象的克隆</li>
+<li>会抛弃对象的constructor，所有的构造函数会指向Object</li>
+<li>对象有循环引用，会报错</li>
+</ol>
+<blockquote>
+<p>对于深度克隆，需要判断对象的类型，来针对相应的类型应用相应的克隆方式</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isType = <span class="function">(<span class="params">obj, type</span>) =&gt;</span> &#123; <span class="comment">//=&gt; 判断对象类型</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> obj !== <span class="string">'object'</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">const</span> typeString = <span class="built_in">Object</span>.prototype.toString.call(obj);</span><br><span class="line">  <span class="keyword">let</span> flag;</span><br><span class="line">  <span class="keyword">switch</span> (type) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'Array'</span>:</span><br><span class="line">      flag = typeString === <span class="string">'[object Array]'</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'Date'</span>:</span><br><span class="line">      flag = typeString === <span class="string">'[object Date]'</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'RegExp'</span>:</span><br><span class="line">      flag = typeString === <span class="string">'[object RegExp]'</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      flag = <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> flag;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> clone = <span class="function"><span class="params">parent</span> =&gt;</span> &#123; <span class="comment">//=&gt; 克隆</span></span><br><span class="line">  <span class="comment">// 维护两个储存循环引用的数组</span></span><br><span class="line">  <span class="keyword">const</span> parents = [];</span><br><span class="line">  <span class="keyword">const</span> children = [];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> _clone = <span class="function"><span class="params">parent</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (parent === <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> parent !== <span class="string">'object'</span>) <span class="keyword">return</span> parent;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> child, proto;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (isType(parent, <span class="string">'Array'</span>)) &#123;</span><br><span class="line">      <span class="comment">// 对数组做特殊处理</span></span><br><span class="line">      child = [];</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isType(parent, <span class="string">'RegExp'</span>)) &#123;</span><br><span class="line">      <span class="comment">// 对正则对象做特殊处理</span></span><br><span class="line">      child = <span class="keyword">new</span> <span class="built_in">RegExp</span>(parent.source, getRegExp(parent));</span><br><span class="line">      <span class="keyword">if</span> (parent.lastIndex) child.lastIndex = parent.lastIndex;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isType(parent, <span class="string">'Date'</span>)) &#123;</span><br><span class="line">      <span class="comment">// 对Date对象做特殊处理</span></span><br><span class="line">      child = <span class="keyword">new</span> <span class="built_in">Date</span>(parent.getTime());</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 处理对象原型</span></span><br><span class="line">      proto = <span class="built_in">Object</span>.getPrototypeOf(parent);</span><br><span class="line">      <span class="comment">// 利用Object.create切断原型链</span></span><br><span class="line">      child = <span class="built_in">Object</span>.create(proto);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 处理循环引用</span></span><br><span class="line">    <span class="keyword">const</span> index = parents.indexOf(parent);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (index != <span class="number">-1</span>) &#123;</span><br><span class="line">      <span class="comment">// 如果父数组存在本对象,说明之前已经被引用过,直接返回此对象</span></span><br><span class="line">      <span class="keyword">return</span> children[index];</span><br><span class="line">    &#125;</span><br><span class="line">    parents.push(parent);</span><br><span class="line">    children.push(child);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i <span class="keyword">in</span> parent) &#123;</span><br><span class="line">      <span class="comment">// 递归</span></span><br><span class="line">      child[i] = _clone(parent[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> child;</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">return</span> _clone(parent);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#克隆的实现"><span class="toc-text">克隆的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#浅克隆"><span class="toc-text">浅克隆</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#深度克隆"><span class="toc-text">深度克隆</span></a></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 好的老头</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">http://1fu.online/blog/passages/2018-04-08-克隆/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/blog/tags/Array/"><i class="fa fa-tags"></i>Array</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      <div class="site-comment-contanier">
+  <p id="site-comment-info">
+    <i class="fa fa-spinner fa-spin"></i> 评论加载中
+  </p>
+  <div id="site-comment">
+  </div>
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">博客推荐</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/" target="_blank">GodBMW</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="http://ruanyifeng.com/" target="_blank">阮一峰的个人网站</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">系列教程</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/categories/webpack4%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" target="_blank">webpack4系列教程</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/design-patterns/" target="_blank">设计模式手册</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">抓到我</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://juejin.im/user/5b3c19f7e51d4519856564d1" target="_blank">掘金</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://segmentfault.com/" target="_blank">思否</a>
+          </span>
+        
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: grace5925@hotmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https:/godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+        
+          <div>
+            <img src="/images/wechat.png" alt="WeChat">
+            
+              <p>WeChat</p>
+            
+          </div>
+        
+          <div>
+            <img src="/images/alipay.png" alt="AliPay">
+            
+              <p>AliPay</p>
+            
+          </div>
+        
+      </div>
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/blog/passages/2018-04-09-移动端适配/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/blog/passages/2018-04-07-Array/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    <a href="javascript:void(0);" id="site-reward">
+      <i class="fa fa-thumbs-up"></i>
+    </a>
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133168577-1"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-133168577-1');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+  </body>
+</html>

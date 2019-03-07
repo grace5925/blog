@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+  
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta name="author" content="好的老头">
+  
+  
+  <title>flex小记 | 好的老头</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="css,css,flex,">
+  
+
+  
+  <meta name="description" content="flex布局">
+
+  
+
+  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Dzlv6CygGbM1UIsGQvz2qnXQ-gzGzoHsz","appkey":"AwGaJg3f3cR0eJ8jG8Hc8yLM","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2018-02-06",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "好的老头",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: ""
+  };
+</script>
+
+  <script src="/blog/vendor/sha256.min.js"></script>
+<script src="/blog/js/auth.js"></script>
+<script src="/blog/js/index.js"></script>
+<script src="/blog/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/blog/css/index.css">
+<link rel="stylesheet" href="/blog/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">1fu.online</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 「心有山海，静而无边」</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/grace5925/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2018-03-22
+    </span>
+    
+      <span>
+        | <a href="/blog/categories/css/"><i class="fa fa-bookmark"></i>css</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    flex小记
+  </h1>
+  
+  <article class="passage-article">
+    <h1 id="flex布局"><a href="#flex布局" class="headerlink" title="flex布局"></a>flex布局</h1><h2 id="属性："><a href="#属性：" class="headerlink" title="属性："></a>属性：</h2><h3 id="容器属性："><a href="#容器属性：" class="headerlink" title="容器属性："></a>容器属性：</h3><ul>
+<li><p><strong>display: flex;</strong></p>
+<ul>
+<li>webkit内核需要加前缀<code>-webkit-flex</code>；</li>
+<li>给父元素设置时，内部子元素横向排列；</li>
+<li>当父元素空间不足时，子元素宽度平均等分；</li>
+<li>设为flex以后，子元素的<code>float、clear、vertical-align</code>属性将失效。</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.wrap</span>&#123;</span><br><span class="line">    <span class="attribute">display</span>: -webkit-box;   <span class="comment">/*  兼容低版本safari  */</span></span><br><span class="line">    <span class="attribute">display</span>: -moz-box;      <span class="comment">/*  兼容低版本FireFox  */</span></span><br><span class="line">    <span class="attribute">display</span>: -ms-flexbox;   <span class="comment">/*  兼容IE10  */</span></span><br><span class="line">    <span class="attribute">display</span>: -webkit-flex;  <span class="comment">/*  兼容webkit  */</span></span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>flex-direction</strong>：主轴方向（排列方向）</p>
+<ul>
+<li><code>row</code>（默认值）：水平方向从左向右；</li>
+<li><code>row-reverse</code>：起点在右端，向左；</li>
+<li><code>column</code>：垂直方向从上向下；</li>
+<li><code>column-reverse</code>：起点在下端，向上。</li>
+</ul>
+</li>
+<li><p><strong>flex-wrap</strong></p>
+<ul>
+<li><code>nowrap</code>（默认值）：不换行，当父元素空间不足时，子元素宽度平均等分;</li>
+<li><code>wrap</code>：换行，第一行在最上面；</li>
+<li><code>wrap-reverse</code>：第一行在最下面。</li>
+</ul>
+</li>
+<li><p><strong>flex-flow</strong>：是<code>flex-direction</code>和<code>flex-wrap</code>的简写，默认值是<code>row nowrap</code>。</p>
+</li>
+<li><p><strong>justify-content</strong>（主轴方向对齐）</p>
+<ul>
+<li><code>flex-start</code>（默认值）：起点对齐；</li>
+<li><code>flex-end</code>：终点对齐；</li>
+<li><code>center</code>：居中；</li>
+<li><code>space-between</code>：分散居中（两端对齐，间隔相等）；</li>
+<li><code>space-around</code>：居中，两边边距相等。</li>
+</ul>
+</li>
+<li><p><strong>align-items</strong>（交叉轴对齐）</p>
+<ul>
+<li><code>flex-start</code>：起点对齐；</li>
+<li><code>flex-end</code>：终点对齐；</li>
+<li><code>center</code>：居中；</li>
+<li><code>baseline</code>：子元素文字底边线对齐；</li>
+<li><code>stretch</code>：假设主轴为<code>x轴</code>方向，如果子元素高度为<code>auto</code>，此时子元素<code>y轴</code>方向将撑满容器。</li>
+</ul>
+</li>
+<li><p><strong>align-content</strong></p>
+</li>
+</ul>
+<h3 id="子元素属性："><a href="#子元素属性：" class="headerlink" title="子元素属性："></a>子元素属性：</h3><ul>
+<li><strong>flex-shrink</strong><ul>
+<li>定义子元素的缩小比例；</li>
+<li>默认值为1，此时当父元素空间不足时，被定义的子元素等比例缩小；</li>
+<li>设置0时不缩放。</li>
+</ul>
+</li>
+<li><strong>order</strong><ul>
+<li>默认值为0；</li>
+<li>代表排列顺序，类似<code>index</code>。</li>
+</ul>
+</li>
+<li><strong>align-self</strong><ul>
+<li>自己单独设置对齐方式,可以覆盖<code>align-items</code>属性;</li>
+<li><code>auto</code>（默认值）：表示继承父元素<code>align-items</code>的值,如果没有父元素，则等同于<code>stretch</code>；</li>
+<li><code>flex-start</code>：起点对齐；</li>
+<li><code>flex-end</code>：终点对齐；</li>
+<li><code>center</code>：居中对齐；</li>
+<li><code>baseline</code>：文字底边线对齐；</li>
+<li><code>stretch</code>：当交叉轴方向尺寸不定时，该方向尺寸撑满父容器。</li>
+</ul>
+</li>
+<li><strong>flex-grow</strong><ul>
+<li>如果所有子元素都设置该属性为1，则等分父元素剩余空间，如果其中一个子元素属性为3，则该元素占的剩余空间为（<code>3/所有该属性值的和</code>）；</li>
+<li>默认值为0，不占剩余空间。</li>
+</ul>
+</li>
+<li><strong>flex-basis</strong></li>
+<li><strong>flex</strong><ul>
+<li><code>flex-grow,flex-shrink,flex-basis</code>的集合；</li>
+<li>有两个快捷值：<code>auto</code>（1,1,auto）和<code>none</code>（0,0,auto）。</li>
+</ul>
+</li>
+</ul>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#flex布局"><span class="toc-text">flex布局</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#属性："><span class="toc-text">属性：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#容器属性："><span class="toc-text">容器属性：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#子元素属性："><span class="toc-text">子元素属性：</span></a></li></ol></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 好的老头</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">http://1fu.online/blog/passages/2018-03-22-flex小记/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/blog/tags/css/"><i class="fa fa-tags"></i>css</a>
+     
+      <a href="/blog/tags/flex/"><i class="fa fa-tags"></i>flex</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      <div class="site-comment-contanier">
+  <p id="site-comment-info">
+    <i class="fa fa-spinner fa-spin"></i> 评论加载中
+  </p>
+  <div id="site-comment">
+  </div>
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">博客推荐</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/" target="_blank">GodBMW</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="http://ruanyifeng.com/" target="_blank">阮一峰的个人网站</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">系列教程</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/categories/webpack4%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" target="_blank">webpack4系列教程</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/design-patterns/" target="_blank">设计模式手册</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">抓到我</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://juejin.im/user/5b3c19f7e51d4519856564d1" target="_blank">掘金</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://segmentfault.com/" target="_blank">思否</a>
+          </span>
+        
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: grace5925@hotmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https:/godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+        
+          <div>
+            <img src="/images/wechat.png" alt="WeChat">
+            
+              <p>WeChat</p>
+            
+          </div>
+        
+          <div>
+            <img src="/images/alipay.png" alt="AliPay">
+            
+              <p>AliPay</p>
+            
+          </div>
+        
+      </div>
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/blog/passages/2018-04-07-Array/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/blog/passages/2018-03-22-git指令/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    <a href="javascript:void(0);" id="site-reward">
+      <i class="fa fa-thumbs-up"></i>
+    </a>
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133168577-1"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-133168577-1');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+  </body>
+</html>
