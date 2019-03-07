@@ -54,21 +54,21 @@
 
   // load after DOM built
   const documentSrcs = [
-    '/blog/js/copy.js',
-    '/blog/js/layer.js',
-    '/blog/js/scroll.js',
-    '/blog/js/backTop.js',
-    '/blog/js/time.js',
-    '/blog/js/search.js',
-    '/blog/js/passage.js'
+    `${window.AD_CONFIG.root}/js/copy.js`,
+    `${window.AD_CONFIG.root}/js/layer.js`,
+    `${window.AD_CONFIG.root}/js/scroll.js`,
+    `${window.AD_CONFIG.root}/js/backTop.js`,
+    `${window.AD_CONFIG.root}/js/time.js`,
+    `${window.AD_CONFIG.root}/js/search.js`,
+    `${window.AD_CONFIG.root}/js/passage.js`
   ];
 
   // load after all srcs loaded
   const windowSrcs = [
-    '/blog/js/leancloud.js',
-    '/blog/js/share.js',
-    '/blog/js/reward.js',
-    '/blog/js/mathjax.js'
+    `${window.AD_CONFIG.root}/js/leancloud.js`,
+    `${window.AD_CONFIG.root}/js/share.js`,
+    `${window.AD_CONFIG.root}/js/reward.js`,
+    `${window.AD_CONFIG.root}/js/mathjax.js`
   ];
 
   const documentSrcScripts = documentSrcs.map(src => loadScript(src));
