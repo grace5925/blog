@@ -52,24 +52,26 @@
     });
   };
 
+  const { root } = window.AD_CONFIG;
+
   // load after DOM built
   const documentSrcs = [
-    `${window.AD_CONFIG.root}/js/copy.js`,
-    `${window.AD_CONFIG.root}/js/layer.js`,
-    `${window.AD_CONFIG.root}/js/scroll.js`,
-    `${window.AD_CONFIG.root}/js/backTop.js`,
-    `${window.AD_CONFIG.root}/js/time.js`,
-    `${window.AD_CONFIG.root}/js/search.js`,
-    `${window.AD_CONFIG.root}/js/passage.js`
-  ];
+    'js/copy.js',
+    'js/layer.js',
+    'js/scroll.js',
+    'js/backTop.js',
+    'js/time.js',
+    'js/header.js',
+    'js/passage.js'
+  ].map(item => `${root}${item}`);
 
   // load after all srcs loaded
   const windowSrcs = [
-    `${window.AD_CONFIG.root}/js/leancloud.js`,
-    `${window.AD_CONFIG.root}/js/share.js`,
-    `${window.AD_CONFIG.root}/js/reward.js`,
-    `${window.AD_CONFIG.root}/js/mathjax.js`
-  ];
+    'js/leancloud.js',
+    'js/share.js',
+    'js/reward.js',
+    'js/mathjax.js'
+  ].map(item => `${root}${item}`);
 
   const documentSrcScripts = documentSrcs.map(src => loadScript(src));
   const windowSrcScripts = windowSrcs.map(src => loadScript(src));
